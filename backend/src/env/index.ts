@@ -8,8 +8,18 @@ const envSchema = z.object({
 		.enum(['development', 'test', 'production'])
 		.default('development'),
 	API_URL: z.string().default('http://localhost:3333'),
+	CORS_ORIGIN: z.string().default('http://localhost:5173'),
 	DATABASE_URL: z.string(),
 	JWT_SECRET: z.string(),
+	SMTP_HOST: z.string().optional(),
+	SMTP_PORT: z.coerce.number().int().positive().default(587),
+	SMTP_SECURE: z
+		.enum(['true', 'false'])
+		.default('false')
+		.transform((valor) => valor === 'true'),
+	SMTP_USER: z.email('SMTP_USER inválido').optional(),
+	SMTP_PASS: z.string().optional(),
+	MAIL_FROM: z.string().optional(),
 })
 
 const _env = envSchema.safeParse(process.env)
